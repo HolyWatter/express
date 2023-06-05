@@ -1,22 +1,31 @@
 export const getAllTodo = async (req, res) => {
-  const todos = await req.prisma.todo.findMany();
+  const user = req.user;
+  const todos = await req.prisma.todo.findMany({
+    where: {
+      createdById: user.id,
+    },
+    include: {
+      createdBy: true,
+    },
+  });
 
-  res.json(todos);
+  res.status(200).json(todos);
 };
 
 export const createTodo = async (req, res) => {
+  const user = req.user;
   const { title, completed } = req.body;
   const newTodo = await req.prisma.todo.create({
-    data: { title, completed },
+    data: { title, completed, createdById: user.id },
   });
-  res.json(newTodo);
+  res.status(200).json(newTodo);
 };
 
 export const deleteTodo = async (req, res) => {
   const { id } = req.params;
-  await res.prisma.todo.delete({
+  await req.prisma.todo.delete({
     where: {
-      id: parseInt(id),
+      id: id,
     },
   });
   res.sendStatus(204);
@@ -27,12 +36,12 @@ export const updateTodo = async (req, res) => {
   const { title, completed } = req.body;
   const updatedTodo = await res.prisma.todo.update({
     where: {
-      id: parseInt(id),
+      id: id,
     },
     data: {
       title,
       completed,
     },
   });
-  res.json(updatedTodo);
+  res.status(200).json(updatedTodo);
 };
