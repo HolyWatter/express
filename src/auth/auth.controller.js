@@ -1,6 +1,24 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+export const token = async (req, res) => {
+  const token = req.headers.authorization;
+
+  const isValidToken = jwt.verify(token, process.env.JWT_KEY);
+
+  if (isValidToken) {
+    const newAccessToken = jwt.sign(
+      { email: isValidToken.email },
+      process.env.JWT_KEY,
+      { expiresIn: "3h" }
+    );
+
+    return res.status(200).send({
+      accessToken : newAccessToken
+    })
+  }
+};
+
 export const signup = async (req, res) => {
   const { email, password } = req.body;
   const isEmailExist = await req.prisma.user.findUnique({

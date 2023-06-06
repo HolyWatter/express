@@ -9,7 +9,7 @@ export const getAllTodo = async (req, res) => {
     },
   });
 
-  res.status(200).json(todos);
+  res.status(200).json({data :todos});
 };
 
 export const createTodo = async (req, res) => {

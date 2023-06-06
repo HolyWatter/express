@@ -12,7 +12,7 @@ model Todo {
   id        String      @id @map("_id") @db.ObjectId() @default(auto())
   title     String
   completed Boolean  @default(false)
-  createdDate DateTime @default(now())
+  createdDate DateTime? @default(now())
   createdBy User     @relation(fields: [createdById], references: [id])
   createdById String @db.ObjectId()
 }
