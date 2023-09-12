@@ -7,5 +7,4 @@ authRouter.route("/signup").post(authController.signup);
 authRouter.route("/token").post(authController.token);
 authRouter.route("/login").post(authController.login);
 
-
-export default authRouter
+export default authRouter;

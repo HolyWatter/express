@@ -14,8 +14,8 @@ export const token = async (req, res) => {
     );
 
     return res.status(200).send({
-      accessToken : newAccessToken
-    })
+      accessToken: newAccessToken,
+    });
   }
 };
 
@@ -67,6 +67,9 @@ export const login = async (req, res) => {
   const refreshToken = jwt.sign({ email }, process.env.JWT_KEY, {
     expiresIn: "7d",
   });
+
+  // res.cookie("accessToken", accessToken, { maxAge: 10000, httpOnly: true });
+  // res.cookie("refreshToken", refreshToken, { maxAge: 10000, httpOnly: true });
 
   return res.status(200).send({
     accessToken,
